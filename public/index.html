@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Chat Application</title>
     <script
       src="https://cdn.socket.io/4.8.1/socket.io.min.js"
       integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
@@ -93,6 +93,27 @@
 
     <script>
       const socket = io("http://localhost:9000");
+      let output = document.getElementById("output");
+      let message = document.getElementById("message");
+      let name = document.getElementById("name");
+      let send = document.getElementById("send");
+
+      send.addEventListener("click", () => {
+        let data = {
+          name : name.value,
+          message : message.value
+        }
+
+        socket.emit('chat', data)
+      })
+
+      //listen events
+      socket.on("chat", (data) => {
+        output.innerHTML += `<p><strong>${data.name}</strong> : ${data.message}</p>`  
+        name.value = "",
+        message.value = ""
+      })
+
     </script>
   </body>
 </html>
